@@ -15,11 +15,13 @@ import session from 'express-session';
 const productManager= new ProductManager();
 import {initializePassport} from "./config/passport.config.js"
 import passport from "passport";
+import configs from "./config.js";
 
 const app = express ();
 
 try{
-    await mongoose.connect("mongodb+srv://eleonoratubio:jT0Z0SKpSILu6qvz@cluster0.4gfsjbp.mongodb.net/clase21?retryWrites=true&w=majority");
+    await mongoose.connect(configs.mongoUrl);
+   // await mongoose.connect("mongodb+srv://eleonoratubio:jT0Z0SKpSILu6qvz@cluster0.4gfsjbp.mongodb.net/clase21?retryWrites=true&w=majority");
     console.log("Connected to DB");
 }
 catch(error){console.log(error.message)};

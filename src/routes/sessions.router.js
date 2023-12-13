@@ -2,6 +2,9 @@ import { Router } from 'express';
 import usersModel from '../dao/dbManager/models/users.model.js';
 import { createHash, isValidPassword } from '../utils.js';
 import passport from 'passport';
+import configs from "../config.js";
+import { config } from 'dotenv';
+
 const router = Router();
 
 router.post("/register",passport.authenticate("register",{failureRedirect: "fail-register"}), async (req, res) => {
@@ -22,7 +25,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: 'fail-lo
         email: req.user.email,
         age: req.user.age,
         cart: req.user.cart,
-        isAdmin:(req.user.email=="adminCoder@coder.com")
+        isAdmin:(req.user.email==config.mailAdmin)
     }
     res.send({ status: 'success', message: 'login success' })
 });
