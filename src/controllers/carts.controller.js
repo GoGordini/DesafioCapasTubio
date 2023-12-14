@@ -1,4 +1,4 @@
-import {createCart as createCartService,getCart as getCartService,updateCart as updateCartService, deleteCart as deleteCartService, deleteProductFromCart as deleteProductFromCartService} from "../services/carts.service.js";
+import {createCart as createCartService,getCart as getCartService,updateCart as updateCartService, deleteCart as deleteCartService, deleteProductFromCart as deleteProductFromCartService, updateFullCart as updateFullCartService} from "../services/carts.service.js";
 import {getProductById as getProductByIdService} from "../services/products.service.js";
 
 export const createCart = async (req, res) => {
@@ -33,24 +33,13 @@ export const addProductToCart = async (req,res)=>{
         if (!cart){
                 return res.status(404).send({status:"error",message:"Cart not found"})
             }
-            if (!product){
+        if (!product){
                 return res.status(404).send({status:"error",message:"Product not found"})
-            }
-        if (cart.products.length===0){
-            cart.products.push({"product":pid,"quantity":1})
-        } else{
-        const indexProductInCart = cart.products.findIndex(product=>product.product._id.toString()===pid)
-            if (indexProductInCart!==-1){
-                cart.products[indexProductInCart].quantity++;
-                    } else {
-                        cart.products.push({"product":pid,"quantity":1});
-                    };
-                }            
-        const result = await updateCartService(cid,cart.products);
+            } 
+        const result = await updateCartService(cid,pid);
         res.status(201).send({status:"success",payload:result});
             }
     catch(error){
-        console.log(error.message);
         res.status(500).send({error:error.message});}
     }
 
@@ -79,18 +68,11 @@ export const deleteCart=async (req,res)=>{
                 }
             if (!product){
                     return res.status(404).send({status:"error",message:"Product not found"})
-                }
-            if (cart.products.length!==0){
-            const indexProductInCart = cart.products.findIndex(product=>product.product._id.toString()===pid)
-                if (indexProductInCart!==-1){
-                    cart.products.splice(indexProductInCart,1);
-                        } 
-            }            
-            const result = await deleteProductFromCartService(cid,cart.products);
+                }       
+            const result = await deleteProductFromCartService(cid,pid);
             res.status(200).send({status:"success",payload:result});
             }
         catch(error){
-            console.log(error.message);
             res.status(500).send({error:error.message});}
         }
 
@@ -104,7 +86,7 @@ export const updateCart= async (req,res)=>{
             if (!cart){
                 return res.status(404).send({status:"error",message:"Cart not found"})
             }
-            const result = await updateCartService(cid,products);
+            const result = await updateFullCartService(cid,products);
             res.status(201).send({status:"success",payload:result});
             }
             catch(error) {
@@ -123,21 +105,11 @@ export const updateProductInCart = async (req,res)=>{
             }
         if (!product){
                 return res.status(404).send({status:"error",message:"Product not found"})
-            }
-        if (cart.products.length===0){
-            cart.products.push({"product":pid,"quantity":amount.quantity})
-        } else{
-        const indexProductInCart = cart.products.findIndex(product=>product.product._id.toString()===pid)
-            if (indexProductInCart!==-1){
-                cart.products[indexProductInCart].quantity+=amount.quantity;
-                    } else {
-                        cart.products.push({"product":pid,"quantity":amount.quantity});
-                    };
-                }            
-                const result = await updateCartService(cid,cart.products);
+            }        
+            
+        const result = await updateCartService(cid,pid,amount.quantity);
         res.status(201).send({status:"success",payload:result});
             }
     catch(error){
-        console.log(error.message);
         res.status(500).send({error:error.message});}
     }
