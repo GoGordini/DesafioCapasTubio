@@ -5,8 +5,8 @@ import { cartPath, productPath} from '../utils.js';
 const cartManager = new CartManager(cartPath);
 const productManager = new ProductManager(productPath);
 
-const enoughStock = (quantity,stock) =>{
-    return quantity<=stock;
+const notEnoughStock = (quantity,stock) =>{
+    return quantity>stock;
 }
 
 export const createCart= async () => {
@@ -19,7 +19,10 @@ export const getCart= async (cid) => {
     return cart;
 }
 
-export const updateCart= async (cid,pid,quantity=1) => {
+export const updateCart= async (cid,pid,quantity=1,stock) => {
+    if (notEnoughStock(quantity,stock)){
+        return ("Not enough stock")
+    }
     const cart = await cartManager.getCartById(cid)
     if (cart.products.length===0){
         cart.products.push({"product":pid,"quantity":quantity})
