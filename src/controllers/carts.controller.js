@@ -1,11 +1,5 @@
-import CartManager from "../dao/dbManager/carts.manager.js";
-import ProductManager from "../dao/dbManager/products.manager.js"
-import { cartPath, productPath} from '../utils.js';
 import {createCart as createCartService,getCart as getCartService,updateCart as updateCartService, deleteCart as deleteCartService, deleteProductFromCart as deleteProductFromCartService} from "../services/carts.service.js";
 import {getProductById as getProductByIdService} from "../services/products.service.js";
-
-const cartManager = new CartManager(cartPath);
-const productManager = new ProductManager(productPath);
 
 export const createCart = async (req, res) => {
     try {
