@@ -1,9 +1,7 @@
 import CartManager from "../dao/dbManager/carts.manager.js";
-import ProductManager from "../dao/dbManager/products.manager.js"
 import { cartPath, productPath} from '../utils.js';
 
 const cartManager = new CartManager(cartPath);
-const productManager = new ProductManager(productPath);
 
 const notEnoughStock = (quantity,stock) =>{
     return quantity>stock;

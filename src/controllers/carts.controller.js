@@ -37,7 +37,7 @@ export const addProductToCart = async (req,res)=>{
                 return res.status(404).send({status:"error",message:"Product not found"})
             } 
         const result = await updateCartService(cid,pid,1,product.stock);
-        res.status(201).send({status:"success",payload:result});
+        (result==="Not enough stock")? res.status(400).send({status:"error",message:"Not enough stock"}) : res.status(201).send({status:"success",payload:result});
             }
     catch(error){
         res.status(500).send({error:error.message});}
@@ -81,7 +81,7 @@ export const updateCart= async (req,res)=>{
             const {products} = req.body;
             const {cid} =req.params;
             if (!products) {
-                return res.status(400).send({status:"error", message:"incomplete values"})};
+                return res.status(422).send({status:"error", message:"Incomplete values"})};
             const cart = await getCartService(cid);
             if (!cart){
                 return res.status(404).send({status:"error",message:"Cart not found"})

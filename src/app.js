@@ -61,6 +61,18 @@ app.use((req, res) => {
     res.status(404).send('Error 404: Page Not Found');
   });
 
+  //middleware global para trabajar los errores de joi. Si viene de joi tiene un flag isJoi.
+  app.use((err, req, res, next) => {
+    if(err && err.error && err.error.isJoi) {
+        res.status(422).json({
+            type: err.type,
+            message: err.error.toString()
+        })
+    } else {
+        next(err);
+    }
+})
+
 const server= app.listen(8080, ()=>console.log("Server running"));
 //const socketServer = new Server(server);
 const io = new Server(server);

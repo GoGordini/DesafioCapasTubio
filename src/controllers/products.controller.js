@@ -37,8 +37,8 @@ export const createProduct= async (req,res)=>{
         const {title,description,price,thumbnail,code,category,stock,status} = req.body;
         const io = req.app.get('socketio');
         //va segunda la variable que quiero definir, primero va como la recibo.
-        if (!title || !description || !price || !code || !category || stock === null || stock === undefined || stock === '') {
-        return res.status(400).send({status:"error", message:"incomplete values"})};
+        // if (!title || !description || !price || !code || !category || stock === null || stock === undefined || stock === '') {
+        // return res.status(400).send({status:"error", message:"incomplete values"})};
         const product = {title,description,price,thumbnail,code,category,stock,status}
         const result = await createProductService(product);
         if (!result) {return res.status(400).send({status:"error",message:"product already exists"})};
@@ -55,8 +55,8 @@ export const updateProduct=async (req,res)=>{
             const {pid} =req.params;
             const io = req.app.get('socketio');
             //va segunda la variable que quiero definir, primero va como la recibo.
-            if (!title || !description || !price || !code || !category || stock === null || stock === undefined || stock === '') {
-            return res.status(400).send({status:"error", message:"incomplete values"})};
+            // if (!title || !description || !price || !code || !category || stock === null || stock === undefined || stock === '') {
+            // return res.status(400).send({status:"error", message:"incomplete values"})};
             const product = {title,description,price,thumbnail,code,category,stock,status}
             const result = await updateProductService(pid,product);
             const products=await getProductService();
